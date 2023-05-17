@@ -11,7 +11,7 @@ This repository is the frontend project. Below you'll see the instructions to ru
 
 Follow the instructions to run the Next.js project in this folder.
 
-1.  Create a `.env.local` file
+1.  Create a `.env.local` file, you can use the .template.env to create the file.
 2.  Add the variables `NODE_ENV` `NEXT_PUBLIC_FLICKR_API_KEY`, with the values "development" and the api key for Flicker API respectively
 3.  Run `npm install`
 4.  Run `npm run dev`
