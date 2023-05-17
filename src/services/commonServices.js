@@ -1,11 +1,11 @@
-import axios from 'axios';
-const URL_BASE = 'https://www.flickr.com/services/rest/';
+import axios from "axios";
+const URL_BASE = "https://www.flickr.com/services/rest/";
 
-async function axiosRequest(method = '', data = {}) {
+async function axiosRequest(method = "", data = {}) {
   return axios.get(URL_BASE, {
     params: {
       api_key: process.env.NEXT_PUBLIC_FLICKR_API_KEY,
-      format: 'json',
+      format: "json",
       nojsoncallback: 1,
       method,
       ...data,
@@ -13,15 +13,20 @@ async function axiosRequest(method = '', data = {}) {
   });
 }
 
-export async function getFeed() {
-  return axiosRequest(`flickr.interestingness.getList`);
+export async function getFeed(perPage, page) {
+  return axiosRequest(`flickr.interestingness.getList`, {
+    per_page: perPage,
+    page: page,
+  });
 }
 
-export async function getTagFeed(tag) {
+export async function getTagFeed(tag, perPage, page) {
   return axiosRequest(`flickr.photos.search`, {
     tags: tag,
-    sort: 'interestingness-desc',
+    sort: "interestingness-desc",
     safe_search: 1,
+    per_page: perPage,
+    page: page,
   });
 }
 

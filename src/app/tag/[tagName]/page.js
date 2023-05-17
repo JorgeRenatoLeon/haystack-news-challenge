@@ -1,15 +1,22 @@
-'use client';
-import Head from 'next/head';
-import { getTagFeed } from '@/services/commonServices';
-import Feed from '@/components/Feed';
-import { useEffect, useState } from 'react';
+"use client";
+import Head from "next/head";
+import { getTagFeed } from "@/services/commonServices";
+import Feed from "@/components/Feed";
+import { useEffect, useState } from "react";
 
 export default function Tag({ params }) {
   const [photos, setPhotos] = useState(null);
+  const [search, setSearch] = useState(params.tagName);
 
-  async function getPhotos(tag) {
+  const photosPerPage = 10;
+
+  async function getPhotos(tag = null, page = 1) {
+    if (!tag) {
+      tag = search;
+    }
+    setSearch(tag);
     const text = decodeURIComponent(tag);
-    const listPhotos = await getTagFeed(text);
+    const listPhotos = await getTagFeed(text, photosPerPage, page);
     setPhotos(listPhotos);
   }
 
@@ -20,8 +27,14 @@ export default function Tag({ params }) {
   return (
     <>
       <Head>
-        <meta name="title" content={`PhotoSearch - Search: ${params.tagName}`} />
-        <meta name="description" content={`Search photos from tag ${params.tagName}`} />
+        <meta
+          name="title"
+          content={`PhotoSearch - Search: ${params.tagName}`}
+        />
+        <meta
+          name="description"
+          content={`Search photos from tag ${params.tagName}`}
+        />
         <meta name="keywords" content="flickr, photos, search, images" />
         <meta name="language" content="English" />
       </Head>
@@ -30,7 +43,8 @@ export default function Tag({ params }) {
         {photos && (
           <Feed
             photos={photos?.data.photos.photo}
-            search={decodeURIComponent(params.tagName)}
+            pages={photos?.data.photos.pages}
+            search={decodeURIComponent(search)}
             searchFunction={getPhotos}
           />
         )}

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from "react";
 
 export default function SearchInput({ searchFunction, search }) {
-  const [searchText, setSearchText] = useState(search ? search : '');
+  const [searchText, setSearchText] = useState(search ? search : "");
 
   return (
     <div className="input-group mb-3">
@@ -15,7 +15,12 @@ export default function SearchInput({ searchFunction, search }) {
         aria-label="Search photos..."
         aria-describedby="button-search"
         value={searchText}
-        onChange={e => setSearchText(e.target.value)}
+        onChange={(e) => setSearchText(e.target.value)}
+        onKeyDownCapture={(e) => {
+          if (e.key === "Enter") {
+            searchFunction(searchText);
+          }
+        }}
         onSubmit={() => searchFunction(searchText)}
       />
       <button
